@@ -7,7 +7,6 @@ import scala.collection.mutable.Map
  *
  * Only considers keys of length 2-10.
  *
- * @author Ondřej Holub
  * @note converted from a simple REPL script
  */
 object VigenereCipher {

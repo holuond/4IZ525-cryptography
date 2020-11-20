@@ -5,7 +5,10 @@ Scripts written while attending course 4IZ525: Theory of Coding and Cryptography
 Built with Gradle.
 
 Build with
-`gradlew clean build`
+`gradlew clean build --info`
 
 Run with
-`gradlew run -PmainClass=<choose object with main method>`
+`gradlew clean run -PmainClass=<cipher>` where `<cipher>` is one of:
+- VigenereCipher
+- RSA
+- RSACryptanalysis
