@@ -15,4 +15,15 @@ object Utils {
 
     sqrtHelper(n, n1)
   }
+
+  def factorize(x: Int): List[Int] = {
+    // from @LRLucena in https://stackoverflow.com/questions/30280524/scala-way-to-generate-prime-factors-of-a-number
+    @tailrec
+    def foo(x: Int, a: Int = 2, list: List[Int] = Nil): List[Int] = a*a > x match {
+      case false if x % a == 0 => foo(x / a, a    , a :: list)
+      case false               => foo(x    , a + 1, list)
+      case true                => x :: list
+    }
+    foo(x)
+  }
 }
