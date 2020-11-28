@@ -48,10 +48,27 @@ object RSA {
     require(e.gcd(phiM) == 1)
     println(s"Public key: ($e, $m)")
 
-    // Public exponent d as the inverse of e mod phiM
+    // Public exponent d as the inverse of e mod phiM i.e. (e * d).mod(phiM) == 1
     val d = e.modInverse(phiM)
     require((e * d).mod(phiM) == 1)
     println(s"Private key: $d\n")
+
+    // An example of a more manual approach to get d by finding prime factors of phi(m)
+    // d = e^(phi(phi(m))-1) mod phi(m)
+    if (phiM <= Int.MaxValue) {
+      val factorizedPhiM = Utils.factorize(phiM.toInt).groupBy(identity).map {case (num, occurrences) => (num, occurrences.length)}
+      println(s"Factorized phiM = $factorizedPhiM")
+
+      val phiphiM = factorizedPhiM.map { case (num, power) => (num - 1) * num.pow(power - 1) }.product
+      println(s"phi(phiM) = $phiphiM")
+
+      val d2 = e.modPow(phiphiM-1, phiM)
+      assert(d == d2)
+    }
+
+    // σ = (1 + gcd(e − 1, p − 1)) * (1 + gcd(e − 1, q − 1))
+    val sigma = (BigInt(1) + (e - 1).gcd(p - 1)) * (BigInt(1) + (e - 1).gcd(q - 1))
+    println(s"sigma (# of idempotent messages in this RSA system): ${sigma}\n")
 
     // Encrypt a message using the public key and decrypt it with the private key
     val message = if (m <= Int.MaxValue)
